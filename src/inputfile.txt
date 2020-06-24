@@ -1,0 +1,10 @@
+let
+.=
+..<ID:a>
+..ls
+...<STR:'b'>
+...<STR:'a'>
+.gamma
+..<ID:Print>
+..<ID:a>
+false
