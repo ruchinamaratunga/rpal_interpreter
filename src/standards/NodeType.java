@@ -52,8 +52,10 @@ public enum NodeType {
     
     //Variables
     PAREN("<()>"),
-    COMMA(",");
+    COMMA(","),
 
+    YSTAR("<Y*>");
+    
     private String value;
 
     private NodeType(final String v) {
@@ -62,5 +64,23 @@ public enum NodeType {
 
     public String getValue() {
         return value;
+    }
+
+    public static NodeType getType(String valueString) {
+        for(NodeType v : values()){
+            if (valueString.matches("<ID:.*>")) {
+                return NodeType.IDENTIFIER;
+            }
+            if (valueString.matches("<STR:.*>")) {
+                return NodeType.STRING;
+            }
+            if (valueString.matches("<INT:.*>")) {
+                return NodeType.INTEGER;
+            }
+            if( v.getValue().equals(valueString)){
+                return v;
+            }
+        }
+        return null;
     }
 }
