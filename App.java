@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import cse.CSEMachine;
 import standards.AST;
 import standards.ASTNode;
 
@@ -11,7 +12,7 @@ public class App {
         ArrayList<String> inputarray = new ArrayList<String>();
         
         try {
-            File inputfile = new File("inputfile5.txt");
+            File inputfile = new File(args[0]);
             Scanner reader = new Scanner(inputfile);
             while (reader.hasNextLine()) {
               String data = reader.nextLine().trim();
@@ -35,8 +36,12 @@ public class App {
         
         AST ast = new AST(rootnode,nodeDetails);
         ast.ASTBuild();
+        // ast.ASTPrintTree();
         ast.ASTStandardize();
         ast.ASTPrintTree();
+        CSEMachine cseMachine = new CSEMachine(ast);
+        cseMachine.evaluate();
+        // cseMachine.printDeltas();
         return null;
     }
 

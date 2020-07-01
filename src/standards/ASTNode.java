@@ -2,8 +2,9 @@ package standards;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class ASTNode {
+public class ASTNode implements Cloneable{
     private String stringValue;
     private NodeType type;
     private String value;
@@ -26,6 +27,13 @@ public class ASTNode {
         this.children = children;
         this.parent = parent;
         this.setTypeValue();
+    }
+
+    public ASTNode() {}
+
+    @Override
+    public ASTNode clone() throws CloneNotSupportedException{
+        return (ASTNode) super.clone();
     }
 
     public String getValue() {
@@ -94,12 +102,23 @@ public class ASTNode {
     }
 
     private String setValueValue() {
-        if (this.type == NodeType.IDENTIFIER || this.type == NodeType.STRING || this.type == NodeType.INTEGER) {
+        if (this.type == NodeType.IDENTIFIER || this.type == NodeType.INTEGER) {
             String temp = this.stringValue;
-            temp.replace("<", "");
-            temp.replace(">", "");
+            temp.trim();
+            temp = temp.substring(1, temp.length()-1);
             String[] items = temp.split(":");
-            return (String) Array.get(items, 0);
+            // System.out.println(Array.get(items,1));
+            return (String) Array.get(items, 1);
+        } else if(this.type == NodeType.STRING ) {
+            String temp = this.stringValue;
+            temp.trim();
+            temp = temp.substring(1, temp.length()-1);
+            // System.out.println(temp);
+            String[] items = temp.split(":");
+            String temp_item = (String)Array.get(items,1);
+            temp_item = temp_item.substring(1,temp_item.length()-1);
+            // System.out.println(temp_item);
+            return (temp_item);
         }
         return null;
     }
@@ -114,5 +133,18 @@ public class ASTNode {
 
     public void removeAllChildren() {
         this.children = new ArrayList<ASTNode>();
+    }
+
+    public void printDecendant(int i) {
+        System.out.println(buildString('.', i)+this.type.toString()+"["+this.getValue()+"]");
+        for(ASTNode child: this.children) {
+            child.printDecendant(i+1);
+        }
+    }
+
+    static String buildString(char c, int n) {
+        char[] arr = new char[n];
+        Arrays.fill(arr, c);
+        return new String(arr);
     }
 }
