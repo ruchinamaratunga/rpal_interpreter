@@ -6,17 +6,15 @@ public enum NodeType {
     STRING("<STR:'%s'>"),
     INTEGER("<INT:%s>"),
     
-    //Expressions
+ 
     LET("let"),
     LAMBDA("lambda"),
     WHERE("where"),
     
-    //Tuple expressions
     TAU("tau"),
     AUG("aug"),
     CONDITIONAL("->"),
-    
-    //Boolean Expressions
+   
     OR("or"),
     AND("&"),
     NOT("not"),
@@ -27,7 +25,6 @@ public enum NodeType {
     EQ("eq"),
     NE("ne"),
     
-    //Arithmetic Expressions
     PLUS("+"),
     MINUS("-"),
     NEG("neg"),
@@ -35,24 +32,23 @@ public enum NodeType {
     DIV("/"),
     EXP("**"),
     AT("@"),
-    
-    //Rators and Rands
     GAMMA("gamma"),
     TRUE("<true>"),
     FALSE("<false>"),
     NIL("<nil>"),
     DUMMY("<dummy>"),
-    
-    //Definitions
     WITHIN("within"),
     SIMULTDEF("and"),
     REC("rec"),
     EQUAL("="),
     FCNFORM("function_form"),
-    
-    //Variables
     PAREN("<()>"),
-    COMMA(",");
+    COMMA(","),
+    YSTAR("<Y*>"),
+    BETA(""),
+    DELTA(""),
+    ETA(""),
+    TUPLE("");
 
     private String value;
 
@@ -62,5 +58,23 @@ public enum NodeType {
 
     public String getValue() {
         return value;
+    }
+
+    public static NodeType getType(String valueString) {
+        for(NodeType v : values()){
+            if (valueString.matches("<ID:.*>")) {
+                return NodeType.IDENTIFIER;
+            }
+            if (valueString.matches("<STR:.*>")) {
+                return NodeType.STRING;
+            }
+            if (valueString.matches("<INT:.*>")) {
+                return NodeType.INTEGER;
+            }
+            if( v.getValue().equals(valueString)){
+                return v;
+            }
+        }
+        return null;
     }
 }

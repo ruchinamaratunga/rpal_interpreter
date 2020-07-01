@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import cse.CSEMachine;
 import standards.AST;
 import standards.ASTNode;
 
@@ -11,7 +12,7 @@ public class App {
         ArrayList<String> inputarray = new ArrayList<String>();
         
         try {
-            File inputfile = new File("inputfile.txt");
+            File inputfile = new File(args[0]);
             Scanner reader = new Scanner(inputfile);
             while (reader.hasNextLine()) {
               String data = reader.nextLine().trim();
@@ -32,23 +33,25 @@ public class App {
             nodeDetails.add(getNodeDetails(inputarray.get(i),i)) ;
         }
         ASTNode rootnode = new ASTNode((String) nodeDetails.get(0).get(0),new ArrayList<ASTNode>(), null,(long) nodeDetails.get(0).get(1), (int) nodeDetails.get(0).get(2));
+        
         AST ast = new AST(rootnode,nodeDetails);
         ast.ASTBuild();
-        
+        // ast.ASTPrintTree();
+        ast.ASTStandardize();
+        ast.ASTPrintTree();
+        CSEMachine cseMachine = new CSEMachine(ast);
+        cseMachine.evaluate();
+        // cseMachine.printDeltas();
         return null;
     }
 
     public static ArrayList<Object> getNodeDetails(String node,int i) { 
-        // System.out.println(node);
         ArrayList<Object> outputarray = new ArrayList<Object>();
         long count = node.chars().filter(ch -> ch == '.').count();
         String name = node.replaceAll("[.]","");
         outputarray.add(name);
         outputarray.add(count);
         outputarray.add(i);
-        // System.out.println(name);
-        // System.out.println(count);
-        // System.out.println(i);
         return outputarray;
     }
 }
